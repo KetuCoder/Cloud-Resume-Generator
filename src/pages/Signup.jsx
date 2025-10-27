@@ -23,7 +23,7 @@ export default function Signup() {
 
   try {
     const response = await fetch(
-      "https://564qrvptn9.execute-api.us-west-2.amazonaws.com/test/signup",
+      "https://bt3ibrhv2e.execute-api.us-east-1.amazonaws.com/test/signup",
       {
         method: "POST",
         headers: {

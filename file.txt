@@ -288,3 +288,139 @@ def lambda_handler(event, context):
             },
             "body": json.dumps({"error": str(e)}),
         }
+
+
+
+
+// final resume logic
+
+import json
+import boto3
+import base64
+import uuid
+from datetime import datetime
+
+# --- AWS clients ---
+s3 = boto3.client("s3")
+dynamodb = boto3.resource("dynamodb")
+sns = boto3.client("sns")
+
+# --- Constants ---
+BUCKET_NAME = "bucket-resume-project"    
+TABLE_NAME = "ResumeTable"           
+SNS_TOPIC_ARN = "arn:aws:sns:us-east-1:883664613886:mytopic"  
+
+table = dynamodb.Table(TABLE_NAME)
+
+
+def lambda_handler(event, context):
+    try:
+        print("Lambda triggered.")
+
+        # --- Handle CORS preflight ---
+        if event.get("httpMethod") == "OPTIONS":
+            return {
+                "statusCode": 200,
+                "headers": cors_headers(),
+                "body": json.dumps({"message": "CORS preflight OK"}),
+            }
+
+        # --- Parse body (JSON) ---
+        body = json.loads(event["body"])
+        print("Parsed body keys:", list(body.keys()))
+
+        # Required fields
+        filename = body.get("filename", f"resume-{uuid.uuid4()}.pdf")
+        file_data_b64 = body.get("fileData")
+        if not file_data_b64:
+            raise ValueError("Missing fileData in request")
+
+        # Decode file
+        file_bytes = base64.b64decode(file_data_b64)
+
+        # --- Upload to S3 ---
+        s3_key = f"resumes/{filename}"
+        s3.put_object(
+            Bucket=BUCKET_NAME,
+            Key=s3_key,
+            Body=file_bytes,
+            ContentType="application/pdf",
+        )
+
+        # --- Generate presigned URL (valid 1 hour) ---
+        url = s3.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": BUCKET_NAME, "Key": s3_key},
+            ExpiresIn=3600,
+        )
+
+        # --- Prepare item for DynamoDB ---
+        resume_id = str(uuid.uuid4())
+        timestamp = datetime.utcnow().isoformat()
+
+        item = {
+            "resumeId": resume_id,
+            "username": body.get("username", ""),
+            "email": body.get("email", ""),
+            "country": body.get("country", ""),
+            "college": body.get("college", ""),
+            "skills": body.get("skills", []),
+            "experience": body.get("experience", []),
+            "internship": body.get("internship", []),
+            "softSkills": body.get("softSkills", []),
+            "certification": body.get("certification", []),
+            "s3Key": s3_key,
+            "s3Url": url,
+            "createdAt": timestamp,
+        }
+
+        # --- Save to DynamoDB ---
+        table.put_item(Item=item)
+
+        print(f"✅ Uploaded {filename} to S3 and saved record {resume_id} in DynamoDB")
+
+        # --- Publish SNS message ---
+        message = {
+            "resumeId": resume_id,
+            "username": item["username"],
+            "email": item["email"],
+            "uploadedAt": timestamp,
+            "s3Url": url,
+            "s3Key": s3_key,
+        }
+
+        sns.publish(
+            TopicArn=SNS_TOPIC_ARN,
+            Message=json.dumps(message, indent=2),
+            Subject=f"New Resume Uploaded: {item['username'] or resume_id}",
+        )
+
+        print(f"📢 SNS message published to topic: {SNS_TOPIC_ARN}")
+
+        # --- Success response ---
+        return {
+            "statusCode": 200,
+            "headers": cors_headers(),
+            "body": json.dumps({
+                "message": "Resume uploaded successfully and SNS notification sent",
+                "url": url,
+                "resumeId": resume_id,
+            }),
+        }
+
+    except Exception as e:
+        print("❌ Error:", str(e))
+        return {
+            "statusCode": 500,
+            "headers": cors_headers(),
+            "body": json.dumps({"error": str(e)}),
+        }
+
+
+def cors_headers():
+    """Helper for CORS headers."""
+    return {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+    }
