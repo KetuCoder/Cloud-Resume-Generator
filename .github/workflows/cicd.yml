@@ -54,7 +54,7 @@ jobs:
           ignore-unfixed: true
 
       - name: Login To DockerHub
-        run: sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ DOCKERHUB_PASSWORD }}
+        run: sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Push Docker image
         run: |
