@@ -1,0 +1,339 @@
+/* ===== GLOBAL RESET ===== */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+h1, h2, h3 {
+  margin: 0.5rem 0;
+}
+
+/* ===== NAVBAR ===== */
+nav {
+  background: #ffffff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e6e6e6;
+}
+
+nav h1 {
+  color: #1a4f8a;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #1a4f8a;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== FORM ===== */
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+button {
+  background-color: #1a4f8a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #0e3870;
+}
+
+/* ===== DASHBOARD ===== */
+/* .dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+} */
+
+/* ===== DASHBOARD SECTION ===== */
+.dashboard-container {
+  max-width: 950px;
+  margin: 2rem auto;
+  background: #ffffff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  border-top: 6px solid #1a4f8a;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.dashboard-container h2 {
+  text-align: center;
+  color: #1a4f8a;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.8px;
+}
+
+/* Grid layout for inputs */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-grid input,
+.dashboard-grid textarea,
+.dashboard-grid select {
+  width: 100%;
+  font-size: 15px;
+  padding: 12px 14px;
+  border: 1px solid #ccd6e0;
+  border-radius: 8px;
+  background: #fafbfc;
+  transition: all 0.3s ease;
+  resize: none;
+}
+
+.dashboard-grid input:focus,
+.dashboard-grid textarea:focus {
+  outline: none;
+  border-color: #1a4f8a;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(26, 79, 138, 0.2);
+}
+
+.dashboard-grid textarea {
+  min-height: 200px; /* fits 3–4 lines comfortably */
+}
+
+.dashboard-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Submit button styling */
+.dashboard-button {
+  display: block;
+  margin: 1.5rem auto 0;
+  background-color: #1a4f8a;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dashboard-button:hover {
+  background-color: #0e3870;
+  transform: translateY(-2px);
+}
+
+/* Small animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ===== RESUME PAGE ===== */
+.resume-page-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.resume-page-grid > div {
+  flex: 1;
+  min-width: 420px;
+}
+
+/* ===== RESUME CARD ===== */
+.resume-preview-container {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  min-height: 600px;
+  transition: transform 0.3s;
+}
+
+.resume-preview-container:hover {
+  transform: translateY(-4px);
+}
+
+/* ===== CLASSIC TEMPLATE ===== */
+.resume-classic {
+  border-left: 5px solid #1a4f8a;
+  padding-left: 20px;
+  font-family: Georgia, serif;
+}
+
+.resume-classic h1 {
+  color: #1a4f8a;
+  font-size: 26px;
+}
+
+.resume-classic section {
+  margin-top: 15px;
+}
+
+/* ===== MODERN TEMPLATE ===== */
+.resume-modern {
+  background: linear-gradient(135deg, #e8f2ff, #ffffff);
+  border: 1px solid #c8def7;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.resume-modern h1 {
+  color: #003b82;
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+.resume-modern .header {
+  border-bottom: 2px solid #003b82;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+.resume-modern h3 {
+  color: #003b82;
+  margin-top: 15px;
+  font-size: 18px;
+}
+
+.resume-modern ul {
+  margin: 5px 0 0 20px;
+  padding: 0;
+}
+
+
+/* signup and login styling */
+
+/* ===== AUTH PAGES (Login / Signup) ===== */
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a4f8a 0%, #3269d3 100%);
+}
+
+.auth-card {
+  background: #ffffff;
+  width: 380px;
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: fadeSlideIn 0.5s ease-in-out;
+}
+
+.auth-card h2 {
+  text-align: center;
+  color: #1a4f8a;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d9e6;
+  margin-bottom: 14px;
+  font-size: 15px;
+  background: #f9fbfd;
+  transition: all 0.3s;
+}
+
+.auth-input:focus {
+  border-color: #1a4f8a;
+  background: #fff;
+  box-shadow: 0 0 5px rgba(26, 79, 138, 0.2);
+  outline: none;
+}
+
+.auth-button {
+  width: 100%;
+  background-color: #1a4f8a;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.auth-button:hover {
+  background-color: #0e3870;
+  transform: translateY(-2px);
+}
+
+.auth-text {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 15px;
+  color: #555;
+}
+
+.auth-text a {
+  color: #1a4f8a;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudresumeproject
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: resume
+  template:
+    metadata:
+      labels:
+        app: resume
+    spec:
+      containers:
+      - name: cloudresume
+        image: cloudketan/cloudresume
+        ports:
+        - containerPort: 3000
