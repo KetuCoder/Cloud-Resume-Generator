@@ -38,8 +38,9 @@ jobs:
       - name: Gitleaks Scan
         uses: gitleaks/gitleaks-action@v2
         with:
-          skip-install: false  # force fresh install
-
+          path: ./        # scan the whole repository
+          format: json    # optional, choose output format
+          out: gitleaks-report.json 
 
       - name: Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
