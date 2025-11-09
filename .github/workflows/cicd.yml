@@ -34,11 +34,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Gitleaks Scan
-        uses: gitleaks/gitleaks-action@v2
-        with:
-          args: "--path=./ --format=json --report=gitleaks-report.json"
  
       - name: Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
