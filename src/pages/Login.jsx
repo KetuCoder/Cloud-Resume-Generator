@@ -23,7 +23,7 @@ export default function Login() {
 
   try {
     const response = await fetch(
-      "https://vzplwujjs9.execute-api.us-east-1.amazonaws.com/test/login",
+      "https://ayzu4tiwxk.execute-api.us-east-1.amazonaws.com/prod/login",
       {
         method: "POST",
         headers: {

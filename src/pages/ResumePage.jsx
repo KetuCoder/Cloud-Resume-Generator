@@ -22,7 +22,7 @@ export default function ResumePage() {
     try {
       const pdfBlob = await generatePDF(templateType, true);
       const filename = `${data.username || "resume"}-${templateType}.pdf`;
-      const apiUrl = "https://vzplwujjs9.execute-api.us-east-1.amazonaws.com/test/resume";
+      const apiUrl = "https://ayzu4tiwxk.execute-api.us-east-1.amazonaws.com/prod/pdfgenerate";
 
       // Convert Blob → base64
       const arrayBuffer = await pdfBlob.arrayBuffer();
