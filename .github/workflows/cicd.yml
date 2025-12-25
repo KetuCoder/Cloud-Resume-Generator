@@ -1,0 +1,69 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  devsecops:
+    runs-on: self-hosted
+
+    steps:
+      # 1️⃣ Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # 3️⃣ Install dependencies (project root)
+      - name: Install Dependencies
+        run: npm install
+
+      # 4️⃣ SonarQube analysis
+      - name: SonarQube Scan
+        uses: sonarsource/sonarcloud-github-action@v1.11.0
+        with:
+          projectKey: DAppointment
+          projectName: DAppointment
+          organization: my-org
+          token: ${{ secrets.SONAR_TOKEN }}
+
+      # 5️⃣ OWASP Dependency Check
+      - name: OWASP Dependency Check
+        run: |
+          curl -L https://github.com/jeremylong/DependencyCheck/releases/download/v8.2.1/dependency-check-8.2.1-release.zip -o dependency-check.zip
+          unzip dependency-check.zip -d dependency-check
+          ./dependency-check/bin/dependency-check.sh --scan . --disableYarnAudit --disableNodeAudit --out dependency-check-report
+
+      # 6️⃣ Trivy FS Scan
+      - name: Trivy File System Scan
+        uses: aquasecurity/trivy-action@v2
+        with:
+          scan-type: fs
+          path: .
+          format: table
+          exit-code: 1
+
+      # 7️⃣ Build and Push Docker Image
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t cloudketan/resume:v1 .
+          docker push cloudketan/resume:v1
+
+      # 8️⃣ Deploy to Kubernetes
+      - name: Set KUBECONFIG
+        run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f K8s
